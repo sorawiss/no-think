@@ -2,7 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { Tabs } from "expo-router";
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from "../theme/colors";
+import colors from "../theme/colors";
 
 
 export default function RootLayout() {

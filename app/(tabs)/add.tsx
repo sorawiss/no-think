@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Button,
-    Picker,
     StyleSheet,
     TextInput,
     TouchableOpacity,
@@ -9,8 +7,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Text, { typography } from "../components/Text";
-import { colors } from '../theme/colors';
+import colors from '../theme/colors';
 import styles from "../theme/styles";
+import utilClass from "../theme/utilClass";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -83,7 +82,7 @@ function AddScreen() {
             {/* Step 1 */}
             {/* ---------------------- */}
             {step === 1 ? (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20 }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20, width: '100%' }}>
                     <Text style={[typography.h1, { marginBottom: 20 }]} >Select Habit Type</Text>
 
                     {/* Yes/No */}
@@ -110,35 +109,32 @@ function AddScreen() {
                 // Step 2
                 // ----------------------
                 (
-                    <View >
-                        <Text >Enter Habit Details</Text>
-                        <Text >
-                            Type: {habitType === HABIT_TYPES.YES_NO ? 'Yes/No' : 'Timer'}
-                        </Text>
-
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20, width: '60%' }} >
                         {/* Common fields for both types */}
-                        <TextInput
-                            placeholder="Habit Name (e.g., Drink Water)"
-                            value={habitName}
-                            onChangeText={setHabitName}
-                            accessibilityLabel="Enter habit name"
-                            placeholderTextColor={colors.primary}
-                            style={Styles.input}
-                        />
-                        <TextInput
-                            placeholder="Description (optional)"
-                            value={habitDescription}
-                            onChangeText={setHabitDescription}
-                            accessibilityLabel="Enter habit description"
-                            style={[Styles.input, { height: 80, textAlignVertical: 'top' }]}
-                            multiline
-                        />
+                        <View style={{ width: '100%' }}>
+                            <TextInput
+                                placeholder="Habit Name"
+                                value={habitName}
+                                onChangeText={setHabitName}
+                                accessibilityLabel="Enter habit name"
+                                placeholderTextColor={colors.primary}
+                                style={Styles.input}
+                            />
+                            <TextInput
+                                placeholder="Description"
+                                value={habitDescription}
+                                onChangeText={setHabitDescription}
+                                accessibilityLabel="Enter habit description"
+                                placeholderTextColor={colors.primary}
+                                style={[Styles.input]}
+                            />
+                        </View>
 
                         {/* Timer-specific fields */}
                         {habitType === HABIT_TYPES.TIMER && (
                             <>
                                 <TextInput
-                                    placeholder="Duration (minutes)"
+                                    placeholder="Time"
                                     value={timerDuration}
                                     onChangeText={setTimerDuration}
                                     keyboardType="numeric"
@@ -147,35 +143,28 @@ function AddScreen() {
                                     placeholderTextColor={colors.primary}
                                 />
                                 <Text >Timer Condition</Text>
-                                <Picker
-                                    selectedValue={timerCondition}
-                                    onValueChange={(value: string) => setTimerCondition(value)}
-                                    accessibilityLabel="Select timer condition"
-                                >
-                                    <Picker.Item
-                                        label="More than this duration"
-                                        value={TIMER_CONDITIONS.MORE_THAN}
-                                    />
-                                    <Picker.Item
-                                        label="Less than this duration"
-                                        value={TIMER_CONDITIONS.LESS_THAN}
-                                    />
-                                </Picker>
                             </>
                         )}
 
-                        <Button
-                            title="Save Habit"
-                            onPress={handleSubmit}
-                            color={colors.background}
-                            accessibilityLabel="Save habit"
-                        />
-                        <Button
-                            title="Back"
-                            onPress={() => setStep(1)}
-                            color={colors.background}
-                            accessibilityLabel="Go back to habit type selection"
-                        />
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity
+                                style={[utilClass.button, { marginBottom: 10 }]}
+                                onPress={handleSubmit}
+                                accessibilityLabel="Save habit"
+                            >
+                                <Text style={[{ color: colors.background, fontWeight: '600' }]}>Save Habit</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[utilClass.button, {
+                                    borderColor: colors.primary, borderWidth: 1,
+                                    backgroundColor: colors.background
+                                }]}
+                                onPress={() => setStep(1)}
+                                accessibilityLabel="Go back to habit type selection"
+                            >
+                                <Text style={[{ color: colors.primary, fontWeight: '600' }]}>Back</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 )}
         </SafeAreaView>
@@ -203,6 +192,7 @@ const Styles = StyleSheet.create({
         padding: 12,
         marginBottom: 12,
         fontSize: 16,
+        width: '100%',
     },
 })
 

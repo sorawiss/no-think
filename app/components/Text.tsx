@@ -1,6 +1,6 @@
 
 import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
-import { colors } from '../theme/colors';
+import colors from '../theme/colors';
 
 
 export default function CustomText({ style, children, ...props }: { style?: StyleProp<TextStyle>, children: React.ReactNode }) {
