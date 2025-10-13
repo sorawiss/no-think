@@ -5,7 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from "../theme/colors";
 
 
+
 export default function RootLayout() {
+
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
             <View style={{ flex: 1, backgroundColor: colors.background }}>

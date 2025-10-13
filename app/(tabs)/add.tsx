@@ -13,6 +13,8 @@ import utilClass from "../theme/utilClass";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { saveHabit } from '../lib/database';
+import { Habit } from '../types/habit';
 
 
 // Type Safety
@@ -43,7 +45,7 @@ function AddScreen() {
 
     // Handle Submit
     //----------------------
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         // Basic validation
         if (!habitName.trim()) {
             alert('Habit name is required!');
@@ -55,8 +57,9 @@ function AddScreen() {
         }
 
         // Create habit object
-        const habit = {
-            type: habitType,
+        const habit: Habit = {
+            id: new Date().toISOString(),
+            type: habitType!,
             name: habitName,
             description: habitDescription,
             ...(habitType === HABIT_TYPES.TIMER && {
@@ -66,6 +69,7 @@ function AddScreen() {
         };
 
         console.log('Saving habit:', habit);
+        await saveHabit(habit)
 
         // Reset
         setStep(1);
