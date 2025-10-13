@@ -1,8 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Habit } from '../types/habit';
 
-const db = SQLite.openDatabaseSync('habits.db');
-
 
 // Initialize tables
 //--------------------------
