@@ -50,3 +50,13 @@ export async function getAllHabits() {
     const result = await db.getAllAsync('SELECT * FROM habits');
     return result;
 }
+
+
+
+// DEV
+// Clear db
+export async function clearDb() {
+    const db = await SQLite.openDatabaseAsync('habits.db');
+    await db.execAsync('DELETE FROM habits');
+    console.log('Database cleared');
+}

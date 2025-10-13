@@ -5,6 +5,7 @@ import { getAllHabits } from "../lib/database";
 import { useCallback, useEffect, useState } from "react";
 import { Habit } from "../types/habit";
 import { useFocusEffect } from "expo-router";
+import Habbit from "../components/Habbit";
 
 
 
@@ -31,13 +32,8 @@ export default function Index() {
 
   function renderHabit({ item }: { item: Habit }) {
     return (
-      <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee' }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.name}</Text>
-        {item.description && <Text>{item.description}</Text>}
-        <Text>Type: {item.type}</Text>
-        {item.type === 'timer' && (
-          <Text>Duration: {item.duration} minutes</Text>
-        )}
+      <View >
+        <Habbit name={item.name} description={item.description} />
       </View>
     );
   }
@@ -52,6 +48,7 @@ export default function Index() {
         renderItem={renderHabit}
         keyExtractor={(item) => item.id}
       />
+
     </View>
   );
 }
