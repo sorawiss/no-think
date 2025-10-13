@@ -69,14 +69,13 @@ const Habbit = ({ name, description }: HabbitProps) => {
 const styles = StyleSheet.create({
     container: {
         borderRadius: 12,
-        padding: 16,
-        margin: 16,
+        paddingBlock: 20,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 8,
     },
     daysContainer: {
         flexDirection: 'row',
@@ -98,11 +97,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: '#48BB78', // Green color
+        borderColor: colors.primary, 
         backgroundColor: 'transparent',
     },
     dayButtonCompleted: {
-        backgroundColor: '#48BB78', // Green background when completed
+        backgroundColor: colors.primary, 
     },
     dayNumber: {
         color: 'white',
