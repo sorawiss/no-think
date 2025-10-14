@@ -6,3 +6,10 @@ export interface Habit {
     duration?: number;
     condition?: string;
 }
+
+export interface CompletionItem {
+    id: number;
+    habit_id: string;
+    completion_date: string;
+    duration?: number;
+}

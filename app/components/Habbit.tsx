@@ -1,33 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { typography } from './Text';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getHabitCompletions, manageCompletion } from '../lib/database';
 import colors from '../theme/colors';
+import getDate from '../utils/getDate';
+import { typography } from './Text';
 
 
 interface HabbitProps {
     name: string;
     description?: string;
+    habitId: string;
 }
 
-const daysData = [
-    { name: 'Fri', number: 28 },
-    { name: 'Sat', number: 29 },
-    { name: 'Sun', number: 30 },
-    { name: 'Mon', number: 31 },
-    { name: 'Tue', number: 1 },
-    { name: 'Today', number: 2 },
-];
+const daysData = getDate();
 
-const Habbit = ({ name, description }: HabbitProps) => {
-    const [completedDays, setCompletedDays] = useState([28, 29, 30, 31, 1, 2]);
 
-    const handleDayPress = (dayNumber: number) => {
-        if (completedDays.includes(dayNumber)) {
-            setCompletedDays(currentDays => currentDays.filter(day => day !== dayNumber));
-        } else {
-            setCompletedDays(currentDays => [...currentDays, dayNumber]);
+
+const Habbit = ({ name, description, habitId }: HabbitProps) => {
+    const [completedDays, setCompletedDays] = useState<number[]>([]);
+
+
+    // Load completions
+    useEffect(() => {
+        const loadCompletions = async () => {
+            try {
+                const startDate = daysData[5].dateString;
+                const endDate = daysData[0].dateString;
+                const completionDates = await getHabitCompletions(habitId, startDate, endDate);
+                console.log("completion return", completionDates);
+
+
+                // Convert YYYY-MM-DD to day numbers for state
+                const completedNumbers = completionDates.map(date => {
+                    const dayDate = new Date(date);
+                    return dayDate.getDate();
+                });
+
+                setCompletedDays(completedNumbers);
+            } catch (error) {
+                console.error('Failed to load completions:', error);
+            }
+        };
+
+        loadCompletions();
+    }, [habitId]);
+
+
+
+    const handleDayPress = async (dayNumber: number, dateString: string) => {
+        try {
+            // let duration = null;
+            // if (type === 'timer') {
+            //     duration = await showDurationInput();
+            // }
+
+            await manageCompletion(habitId, dateString);
+
+            // Update local state optimistically
+            setCompletedDays(prev =>
+                prev.includes(dayNumber)
+                    ? prev.filter(d => d !== dayNumber)
+                    : [...prev, dayNumber]
+            );
+        } catch (error) {
+            console.error('Failed to update completion:', error);
+            alert('Failed to update habit completion');
         }
     };
+
+    console.log("completedDays", completedDays);
 
 
     return (
@@ -50,7 +91,7 @@ const Habbit = ({ name, description }: HabbitProps) => {
                             <Text style={styles.dayName}>{day.name}</Text>
                             <TouchableOpacity
                                 style={[styles.dayButton, isCompleted && styles.dayButtonCompleted]}
-                                onPress={() => handleDayPress(day.number)}
+                                onPress={() => handleDayPress(day.number, day.dateString)}
                             >
                                 <Text style={[styles.dayNumber, isCompleted && styles.dayNumberCompleted]}>
                                     {day.number}
@@ -97,11 +138,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: colors.primary, 
+        borderColor: colors.primary,
         backgroundColor: 'transparent',
     },
     dayButtonCompleted: {
-        backgroundColor: colors.primary, 
+        backgroundColor: colors.primary,
     },
     dayNumber: {
         color: 'white',

@@ -1,11 +1,12 @@
 import { FlatList, View } from "react-native";
 import styles from "../theme/styles";
 import Text from "../components/Text";
-import { getAllHabits } from "../lib/database";
+import { clearDb, getAllHabits } from "../lib/database";
 import { useCallback, useEffect, useState } from "react";
 import { Habit } from "../types/habit";
 import { useFocusEffect } from "expo-router";
 import Habbit from "../components/Habbit";
+import { Button } from "react-native";
 
 
 
@@ -33,7 +34,7 @@ export default function Index() {
   function renderHabit({ item }: { item: Habit }) {
     return (
       <View >
-        <Habbit name={item.name} description={item.description} />
+        <Habbit name={item.name} description={item.description} habitId={item.id} />
       </View>
     );
   }
@@ -47,6 +48,11 @@ export default function Index() {
         data={habits}
         renderItem={renderHabit}
         keyExtractor={(item) => item.id}
+      />
+
+      <Button
+        title="clear"
+        onPress={() => clearDb()}
       />
 
     </View>
