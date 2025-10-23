@@ -4,6 +4,7 @@ import { getHabitCompletions, manageCompletion } from '../lib/database';
 import colors from '../theme/colors';
 import getDate from '../utils/getDate';
 import { typography } from './Text';
+import { Link } from 'expo-router';
 
 
 interface HabbitProps {
@@ -72,41 +73,43 @@ const Habbit = ({ name, description, habitId }: HabbitProps) => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <View>
-                    <Text style={[typography.h2, { color: colors.primary }]}>{name}</Text>
-                    {description && (
-                        <Text style={[typography.h5, { color: colors.secondary }]}>{description}</Text>
-                    )}
+        <Link href={`/static/${habitId}`}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <View>
+                        <Text style={[typography.h2, { color: colors.primary }]}>{name}</Text>
+                        {description && (
+                            <Text style={[typography.h5, { color: colors.secondary }]}>{description}</Text>
+                        )}
+                    </View>
                 </View>
-            </View>
 
-            {/* Days List Section */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.daysContainer}>
-                {daysData.map((day) => {
-                    const isCompleted = completedDays.includes(day.number);
-                    return (
-                        <View key={day.number} style={styles.dayItem}>
-                            <Text style={styles.dayName}>{day.name}</Text>
-                            <TouchableOpacity
-                                style={[styles.dayButton, isCompleted && styles.dayButtonCompleted]}
-                                onPress={() => handleDayPress(day.number, day.dateString)}
-                            >
-                                <Text style={[styles.dayNumber, isCompleted && styles.dayNumberCompleted]}>
-                                    {day.number}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    );
-                })}
-            </ScrollView>
-        </View>
+                {/* Days List Section */}
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.daysContainer}>
+                    {daysData.map((day) => {
+                        const isCompleted = completedDays.includes(day.number);
+                        return (
+                            <View key={day.number} style={styles.dayItem}>
+                                <Text style={styles.dayName}>{day.name}</Text>
+                                <TouchableOpacity
+                                    style={[styles.dayButton, isCompleted && styles.dayButtonCompleted]}
+                                    onPress={() => handleDayPress(day.number, day.dateString)}
+                                >
+                                    <Text style={[styles.dayNumber, isCompleted && styles.dayNumberCompleted]}>
+                                        {day.number}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })}
+                </ScrollView>
+            </View>
+        </Link>
     );
 };
 
 
-// --- 5. Styling ---
+// --- Styling ---
 const styles = StyleSheet.create({
     container: {
         borderRadius: 12,

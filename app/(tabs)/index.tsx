@@ -1,8 +1,7 @@
 import { FlatList, View } from "react-native";
 import styles from "../theme/styles";
-import Text from "../components/Text";
 import { clearDb, getAllHabits } from "../lib/database";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Habit } from "../types/habit";
 import { useFocusEffect } from "expo-router";
 import Habbit from "../components/Habbit";

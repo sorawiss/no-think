@@ -83,6 +83,7 @@ export const getHabitCompletions = async (habitId: string, startDate: string, en
 
 
 // Log or remove completion
+//--------------------------------
 export const manageCompletion = async (habitId: string, dateString: string, duration?: number) => {
   const db = await SQLite.openDatabaseAsync('habits.db');
 
@@ -105,6 +106,18 @@ export const manageCompletion = async (habitId: string, dateString: string, dura
     console.log('Completion added:', result.lastInsertRowId);
     return { action: 'created', id: result.lastInsertRowId };
   }
+};
+
+
+// Get habit by id
+//--------------------------------
+export const loadHabitById = async (habitId: string) => {
+  const db = await SQLite.openDatabaseAsync('habits.db');
+  const result = await db.getFirstAsync<Habit>(
+    'SELECT * FROM habits WHERE id = ?',
+    [habitId]
+  );
+  return result;
 };
 
 
